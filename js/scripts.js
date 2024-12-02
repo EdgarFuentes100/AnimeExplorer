@@ -50,7 +50,7 @@ function updateGenreOptions(genres) {
     const allOption = document.createElement('option');
     allOption.value = ''; // Sin género seleccionado
     allOption.textContent = 'Todos los géneros';
-    
+
     // Añadir esta opción a ambos selectores
     selectElement.appendChild(allOption);
     selectElement2.appendChild(allOption.cloneNode(true));  // Clonamos la opción para el segundo select
@@ -85,9 +85,9 @@ function updateAnimeList(animeData, page, listId, loadingId, paginationId, lastP
             const animeItem = document.createElement('div');
             animeItem.classList.add('anime-item');
             animeItem.innerHTML = `
-        <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
-        <div class="anime-title">${anime.title}</div>
-    `;
+                <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
+                <div class="anime-title">${anime.title}</div>
+            `;
             animeItem.onclick = () => openModal(anime);
 
             listElement.appendChild(animeItem);
@@ -101,51 +101,27 @@ function updateAnimeList(animeData, page, listId, loadingId, paginationId, lastP
         // Llamada a la función que maneja la paginación
         createPagination(paginationElement, page, lastPage, type);
     } else {
-        listElement.innerHTML = '<p>No hay resultados para mostrar.</p>';
+        // Si no hay animes, mostrar un mensaje especial
+        const noAnimeMessage = document.createElement('div');
+        noAnimeMessage.classList.add('no-anime-message');
+        noAnimeMessage.innerHTML = `
+            <div class="anime-item">
+                        <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
+                <div class="anime-title">No hay animes en esta página.</div>
+            </div>
+        `;
+        listElement.appendChild(noAnimeMessage);
+
+        // Mostrar la paginación incluso si no hay animes, para que el usuario pueda navegar a otras páginas
+        createPagination(paginationElement, page, lastPage, type);
     }
 
     loadingElement.style.display = 'none';
 }
 
+
 // Función para crear la paginación
-function createPagination(paginationElement, currentPage, lastPage, type) {
-    // Limpiar los botones previos de paginación antes de agregar los nuevos
-    paginationElement.innerHTML = '';
 
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Anterior';
-    prevButton.disabled = currentPage === 1;
-    prevButton.onclick = () => {
-        if (currentPage > 1) {
-            if (type === 'top') {
-                fetchTopAnime(currentPage - 1);
-            } else {
-                fetchRecommAnime(currentPage - 1);
-            }
-        }
-    };
-    paginationElement.appendChild(prevButton);
-
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Siguiente';
-    nextButton.disabled = currentPage === lastPage;
-    nextButton.onclick = () => {
-        if (currentPage < lastPage) {
-            if (type === 'top') {
-                fetchTopAnime(currentPage + 1);
-            } else {
-                fetchRecommAnime(currentPage + 1);
-            }
-        }
-    };
-    scrollToStart();
-    // Mostrar la cantidad total de páginas (esto ya fue agregado en `updateAnimeList`)
-    const pageInfo = document.createElement('div');
-    pageInfo.textContent = `Página ${currentPage} de ${lastPage}`;
-    paginationElement.appendChild(pageInfo);
-    paginationElement.appendChild(nextButton);
-
-}
 
 function scrollToStart() {
     const listElement = document.querySelector('#topAnimeList');  // Asegúrate de que sea el contenedor correcto
@@ -176,6 +152,15 @@ document.querySelector('.close').onclick = () => {
     document.getElementById('animeModal').style.display = 'none';
 };
 
+// Nueva función para cargar la siguiente página y manejar la paginación automáticamente
+function loadNextPage(nextPage, type) {
+    // Determinar si la página siguiente tiene datos
+    if (type === 'top') {
+        fetchTopAnime(nextPage);
+    } else {
+        fetchRecommAnime(nextPage);
+    }
+}
 // Función para obtener los animes más vistos
 function fetchTopAnime(page) {
     const genre = document.getElementById('topGenreFilter').value;  // Obtener el género seleccionado
@@ -185,8 +170,41 @@ function fetchTopAnime(page) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            // Imprimir la respuesta completa para ver su estructura (solo para depuración)
-            console.log(data);
+            const lastPage = data.pagination.last_visible_page; // Última página disponible
+            const pageCurrent = data.pagination.current_page; // Página actual
+
+            // Guardar la última página consultada
+            lastPageTop = lastPage;
+
+            // Si la respuesta no tiene datos, mostrar el mensaje "No hay animes en esta página"
+            if (data.data && data.data.length === 0) {
+                console.log('No hay animes en esta página');
+                const listElement = document.getElementById('topAnimeList');
+                const paginationElement = document.getElementById('topPagination');
+                const loadingElement = document.getElementById('topLoading');
+
+                // Limpiar los elementos de la página
+                listElement.innerHTML = '';
+                paginationElement.innerHTML = '';
+
+                // Mostrar el mensaje de "No hay animes en esta página"
+                const noAnimeMessage = document.createElement('div');
+                noAnimeMessage.classList.add('no-anime-message');
+                noAnimeMessage.innerHTML = `
+                    <div class="anime-item">
+                        <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
+                        <div class="anime-title">No hay animes en esta página.</div>
+                    </div>
+                `;
+                listElement.appendChild(noAnimeMessage);
+
+                // Mostrar la paginación sin bloqueos
+                createPagination(paginationElement, pageCurrent, lastPage, 'top');
+
+                // Ocultar el indicador de carga
+                loadingElement.style.display = 'none';
+                return; // Salir de la función ya que no hay animes en esta página
+            }
 
             // Filtramos los animes por género si se ha seleccionado uno
             let filteredData = data.data; // Todos los animes inicialmente
@@ -198,14 +216,44 @@ function fetchTopAnime(page) {
                 );
             }
 
+            // Si no hay datos filtrados, mostramos el mensaje de "No hay animes"
+            if (filteredData.length === 0) {
+                console.log('No hay animes con el género seleccionado en esta página');
+                const listElement = document.getElementById('topAnimeList');
+                const paginationElement = document.getElementById('topPagination');
+                const loadingElement = document.getElementById('topLoading');
+
+                // Limpiar los elementos de la página
+                listElement.innerHTML = '';
+                paginationElement.innerHTML = '';
+
+                // Mostrar el mensaje de "No hay animes"
+                const noAnimeMessage = document.createElement('div');
+                noAnimeMessage.classList.add('no-anime-message');
+                noAnimeMessage.innerHTML = `
+                    <div class="anime-item">
+                        <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
+                        <div class="anime-title">No hay animes en esta página.</div>
+                    </div>
+                `;
+                listElement.appendChild(noAnimeMessage);
+
+                // Mostrar la paginación sin bloqueos
+                createPagination(paginationElement, page, lastPage, 'top');
+
+                // Ocultar el indicador de carga
+                loadingElement.style.display = 'none';
+                return; // Salir de la función ya que no hay animes
+            }
+
             // Actualizamos la lista con los animes filtrados
             updateAnimeList(
                 { data: filteredData, pagination: data.pagination },
-                page,
+                pageCurrent,
                 'topAnimeList',
                 'topLoading',
                 'topPagination',
-                data.pagination.last_visible_page,
+                lastPage,
                 'top'
             );
         })
@@ -215,7 +263,6 @@ function fetchTopAnime(page) {
         });
 }
 
-// Función para obtener los animes recomendados en emisión
 function fetchRecommAnime(page) {
     const genre = document.getElementById('recommGenreFilter').value; // Género seleccionado (mal_id)
     let url = `${BASE_URL}/seasons/now?page=${page}`;
@@ -224,8 +271,41 @@ function fetchRecommAnime(page) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            // Imprimir la respuesta completa para ver su estructura (solo para depuración)
-            console.log(data);
+            const lastPage = data.pagination.last_visible_page; // Última página disponible
+            const pageCurrent = data.pagination.current_page; // Página actual
+
+            // Guardar la última página consultada
+            lastPageRecomm = lastPage;
+
+            // Si la respuesta no tiene datos, mostrar el mensaje "No hay animes en esta página"
+            if (data.data && data.data.length === 0) {
+                console.log('No hay animes en esta página');
+                const listElement = document.getElementById('recommAnimeList');
+                const paginationElement = document.getElementById('recommPagination');
+                const loadingElement = document.getElementById('recommLoading');
+
+                // Limpiar los elementos de la página
+                listElement.innerHTML = '';
+                paginationElement.innerHTML = '';
+
+                // Mostrar el mensaje de "No hay animes en esta página"
+                const noAnimeMessage = document.createElement('div');
+                noAnimeMessage.classList.add('no-anime-message');
+                noAnimeMessage.innerHTML = `
+                    <div class="anime-item">
+                        <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
+                        <div class="anime-title">No hay animes en esta página.</div>
+                    </div>
+                `;
+                listElement.appendChild(noAnimeMessage);
+
+                // Mostrar la paginación sin bloqueos
+                createPagination(paginationElement, pageCurrent, lastPage, 'recomm');
+
+                // Ocultar el indicador de carga
+                loadingElement.style.display = 'none';
+                return; // Salir de la función ya que no hay animes en esta página
+            }
 
             // Filtramos los animes por género si se ha seleccionado uno
             let filteredData = data.data; // Todos los animes inicialmente
@@ -237,14 +317,44 @@ function fetchRecommAnime(page) {
                 );
             }
 
+            // Si no hay datos filtrados, simplemente mostramos el mensaje de "No hay animes"
+            if (filteredData.length === 0) {
+                console.log('No hay animes con el género seleccionado en esta página');
+                const listElement = document.getElementById('recommAnimeList');
+                const paginationElement = document.getElementById('recommPagination');
+                const loadingElement = document.getElementById('recommLoading');
+
+                // Limpiar los elementos de la página
+                listElement.innerHTML = '';
+                paginationElement.innerHTML = '';
+
+                // Mostrar el mensaje de "No hay animes"
+                const noAnimeMessage = document.createElement('div');
+                noAnimeMessage.classList.add('no-anime-message');
+                noAnimeMessage.innerHTML = `
+                    <div class="anime-item">
+                        <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
+                        <div class="anime-title">No hay animes en esta página.</div>
+                    </div>
+                `;
+                listElement.appendChild(noAnimeMessage);
+
+                // Mostrar la paginación sin bloqueos
+                createPagination(paginationElement, page, lastPage, 'recomm');
+
+                // Ocultar el indicador de carga
+                loadingElement.style.display = 'none';
+                return; // Salir de la función ya que no hay animes
+            }
+
             // Actualizamos la lista con los animes filtrados
             updateAnimeList(
                 { data: filteredData, pagination: data.pagination },
-                page,
+                pageCurrent,
                 'recommAnimeList',
                 'recommLoading',
                 'recommPagination',
-                data.pagination.last_visible_page,
+                lastPage,
                 'recomm'
             );
         })
@@ -253,6 +363,44 @@ function fetchRecommAnime(page) {
             document.getElementById('recommAnimeSection').innerHTML = '<p class="error">No se pudo cargar la lista de los animes recomendados.</p>';
         });
 }
+
+
+function createPagination(paginationElement, currentPage, lastPage, type) {
+    // Limpiar los botones previos de paginación antes de agregar los nuevos
+    paginationElement.innerHTML = '';
+
+    // Botón de "Anterior"
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Anterior';
+    prevButton.disabled = currentPage === 1; // Deshabilitar si es la primera página
+    prevButton.onclick = () => {
+        if (currentPage > 1) {
+            if (type === 'top') {
+                fetchTopAnime(currentPage - 1);
+            } else {
+                fetchRecommAnime(currentPage - 1);
+            }
+        }
+    };
+    paginationElement.appendChild(prevButton);
+
+    // Botón de "Siguiente"
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Siguiente';
+    nextButton.disabled = currentPage === lastPage; // Deshabilitar si es la última página
+    nextButton.onclick = () => {
+        if (currentPage < lastPage) {
+            loadNextPage(currentPage + 1, type);
+        }
+    };
+    paginationElement.appendChild(nextButton);
+
+    // Información de la página actual
+    const pageInfo = document.createElement('div');
+    pageInfo.textContent = `Página ${currentPage} de ${lastPage}`;
+    paginationElement.appendChild(pageInfo);
+}
+
 
 // Cargar los animes más vistos y recomendados al inicio
 fetchTopAnime(topPage);
