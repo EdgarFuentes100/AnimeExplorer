@@ -1,0 +1,242 @@
+ /* General body styling */
+ body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header Styling */
+header {
+    background: #333;
+    color: white;
+    padding: 20px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Footer Styling */
+footer {
+    background: #333;
+    color: white;
+    padding: 15px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.anime-section {
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Filter Styling */
+.filter-container {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.filter-container select {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: auto;
+}
+
+/* Estilo de la lista de animes cargar todos a la ves ¡
+.anime-list {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    padding: 20px 0;
+    scroll-behavior: smooth;
+    overflow-y: auto; 
+    max-height: 400px; 
+}*/
+
+/* Elimina cualquier animación de desplazamiento en el contenedor de la lista */
+.anime-list {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0;
+    gap: 20px;
+    flex-wrap: nowrap;
+    scroll-behavior: unset;
+    /* Desactiva cualquier desplazamiento suave */
+}
+
+
+.anime-item {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.anime-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.anime-item img {
+    max-width: 150px;
+    border-radius: 8px;
+}
+
+.anime-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+}
+
+.loading {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding-top: 50px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.modal-content h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.modal-content img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    padding: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #333;
+}
+
+/* Pagination Styling */
+/* Alineación de los botones de paginación y el número de página */
+.pagination {
+    display: flex;
+    justify-content: center;
+    /* Centramos todo el contenido (botones y número de página) */
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+    /* Añadimos un espacio entre los elementos */
+}
+
+.pagination .page-info {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+.pagination button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.pagination button:hover {
+    background-color: #555;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+        max-width: 450px;
+        padding: 15px;
+    }
+
+    .modal-content img {
+        max-width: 100%;
+        height: auto;
+    }
+}

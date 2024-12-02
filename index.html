@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Animes Populares y Recomendados</title>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Buscador de Animes</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div>
+        <!-- Sección de Animes Más Vistos (Carrusel Horizontal) -->
+        <div class="anime-section" id="topAnimeSection">
+            <h2>Animes Más Vistos</h2>
+            <div class="filter-container">
+                <select id="topGenreFilter"></select>
+            </div>
+            <div id="topAnimeList" class="anime-list"></div>
+            <div id="topLoading" class="loading">Cargando...</div>
+            <div id="topPagination" class="pagination"></div>
+        </div>
+
+        <!-- Sección de Animes Recomendados en Emisión -->
+        <div class="anime-section" id="recommAnimeSection">
+            <h2>Recomendados en Emisión</h2>
+            <div class="filter-container">
+                <select id="recommGenreFilter"></select> <!-- Para Animes Recomendados -->
+            </div>
+            <div id="recommAnimeList" class="anime-list"></div>
+            <div id="recommLoading" class="loading">Cargando...</div>
+            <div id="recommPagination" class="pagination"></div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalles del Anime -->
+    <div id="animeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="animeTitleModal"></h2>
+            <img id="animeImageModal" src="" alt="Anime Image">
+            <p><strong>Sinopsis:</strong> <span id="animeSynopsis"></span></p>
+            <p><strong>Género:</strong> <span id="animeGenre"></span></p>
+            <p><strong>Temporadas:</strong> <span id="animeSeasons"></span></p>
+            <p><strong>Episodios:</strong> <span id="animeEpisodes"></span></p>
+            <p><strong>Puntuación:</strong> <span id="animeRating"></span></p>
+        </div>
+    </div>
+
+    <script src="js/scripts.js">
+    </script>
+</body>
+
+</html>
