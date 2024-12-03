@@ -12,10 +12,16 @@
     <!-- Header Section -->
     <header>
         <h1>Buscador de Animes</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar Anime...">
+        </div>
     </header>
 
     <!-- Main Content -->
     <div>
+        <div id="searchResults" class="search-results">
+            <!-- Aquí se mostrarán los resultados de la búsqueda -->
+        </div>
         <!-- Sección de Animes Más Vistos (Carrusel Horizontal) -->
         <div class="anime-section" id="topAnimeSection">
             <h2>Animes Más Vistos</h2>
@@ -37,21 +43,67 @@
             <div id="recommLoading" class="loading">Cargando...</div>
             <div id="recommPagination" class="pagination"></div>
         </div>
+
+        <div class="anime-section" id="recommAnimeSection">
+            <h2>Recomendados en Emisión por años</h2>
+
+            <div class="filter-container">
+                <!-- Filtro por Año -->
+                <select id="recommYearFilter">
+                    <option value="">Seleccionar Año</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                </select>
+
+                <!-- Filtro por Temporada -->
+                <select id="recommSeasonFilter">
+                    <option value="">Seleccionar Temporada</option>
+                    <option value="winter">Invierno</option>
+                    <option value="spring">Primavera</option>
+                    <option value="summer">Verano</option>
+                    <option value="fall">Otoño</option>
+                </select>
+            </div>
+
+            <div id="recommAnimeList" class="anime-list"></div>
+            <div id="recommLoading" class="loading">Cargando...</div>
+            <div id="recommPagination" class="pagination"></div>
+        </div>
+
     </div>
 
     <!-- Modal de Detalles del Anime -->
     <div id="animeModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 id="animeTitleModal"></h2>
-            <img id="animeImageModal" src="" alt="Anime Image">
-            <p><strong>Sinopsis:</strong> <span id="animeSynopsis"></span></p>
-            <p><strong>Género:</strong> <span id="animeGenre"></span></p>
-            <p><strong>Temporadas:</strong> <span id="animeSeasons"></span></p>
-            <p><strong>Episodios:</strong> <span id="animeEpisodes"></span></p>
-            <p><strong>Puntuación:</strong> <span id="animeRating"></span></p>
+
+            <!-- Contenedor para la imagen y el contenido -->
+            <div class="modal-header">
+                <img id="animeImageModal" src="" alt="Anime Image">
+                <!-- Información adicional a la derecha de la imagen -->
+                <div class="modal-extra-info">
+                    <h2 id="animeTitleModal"></h2>
+
+                    <p><strong>Género:</strong> <span id="animeGenre"></span></p>
+                    <p><strong>Temporadas:</strong> <span id="animeSeasons"></span></p>
+                    <p><strong>Episodios:</strong> <span id="animeEpisodes"></span></p>
+                    <p><strong>Puntuación:</strong> <span id="animeRating"></span></p>
+                </div>
+
+            </div>
+            <div class="modal-info">
+                <button id="translateButton">Traducir Sinopsis</button>
+
+                <p><strong>Sinopsis:</strong></p>
+                <p id="animeSynopsis"></p> <!-- Sinopsis debajo de la imagen -->
+            </div>
+
         </div>
     </div>
+
     <script src="js/scripts.js">
     </script>
 </body>

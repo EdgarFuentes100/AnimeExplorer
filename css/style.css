@@ -1,69 +1,114 @@
  /* General body styling */
  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
+     font-family: Arial, sans-serif;
+     background-color: #f4f4f4;
+     margin: 0;
+     padding: 0;
+     text-align: center;
+ }
 
-/* Header Styling */
-header {
-    background: #333;
-    color: white;
-    padding: 20px 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+ /* Header Styling */
+ header {
+     background: #333;
+     color: white;
+     padding: 20px 0;
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+ }
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: bold;
-}
+ /* Estilos para el contenedor del buscador */
+ .search-container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin-top: 20px;
+ }
 
-/* Footer Styling */
-footer {
-    background: #333;
-    color: white;
-    padding: 15px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
-}
+ /* Estilos para el input de búsqueda */
+ #searchInput {
+     width: 100%;
+     max-width: 400px;
+     /* Ancho máximo del input */
+     padding: 12px 20px;
+     font-size: 16px;
+     color: #333;
+     background-color: #f9f9f9;
+     border: 2px solid #ddd;
+     border-radius: 20px;
+     /* Bordes redondeados */
+     box-sizing: border-box;
+     transition: all 0.3s ease;
+     /* Transición suave para cambios */
+ }
 
-footer p {
-    margin: 0;
-    font-size: 1rem;
-}
+ /* Estilos para el input cuando está enfocado */
+ #searchInput:focus {
+     border-color: #007BFF;
+     /* Cambia el borde cuando está enfocado */
+     background-color: #fff;
+     /* Fondo blanco cuando está enfocado */
+     box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+     /* Sombra suave alrededor */
+     outline: none;
+     /* Elimina el contorno predeterminado */
+ }
 
-.anime-section {
-    margin-bottom: 50px;
-    padding: 20px;
-}
+ /* Placeholder estilizado */
+ #searchInput::placeholder {
+     color: #aaa;
+     font-style: italic;
+     /* Estilo en cursiva para el texto placeholder */
+ }
 
-h2 {
-    color: #333;
-    margin-bottom: 20px;
-}
 
-/* Filter Styling */
-.filter-container {
-    margin-top: 10px;
-    margin-bottom: 30px;
-    text-align: center;
-}
+ header h1 {
+     margin: 0;
+     font-size: 2rem;
+     font-weight: bold;
+ }
 
-.filter-container select {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: auto;
-}
+ /* Footer Styling */
+ footer {
+     background: #333;
+     color: white;
+     padding: 15px 0;
+     position: fixed;
+     bottom: 0;
+     width: 100%;
+     text-align: center;
+     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+ }
 
-/* Estilo de la lista de animes cargar todos a la ves ¡
+ footer p {
+     margin: 0;
+     font-size: 1rem;
+ }
+
+ .anime-section {
+     margin-bottom: 50px;
+     padding: 20px;
+ }
+
+ h2 {
+     color: #333;
+     margin-bottom: 20px;
+ }
+
+ /* Filter Styling */
+ .filter-container {
+     margin-top: 10px;
+     margin-bottom: 30px;
+     text-align: center;
+ }
+
+ .filter-container select {
+     padding: 10px 20px;
+     font-size: 16px;
+     border-radius: 5px;
+     border: 1px solid #ccc;
+     width: auto;
+ }
+
+ /* Estilo de la lista de animes cargar todos a la ves ¡
 .anime-list {
     display: flex;
     flex-wrap: wrap; 
@@ -74,58 +119,72 @@ h2 {
     max-height: 400px; 
 }*/
 
-/* Elimina cualquier animación de desplazamiento en el contenedor de la lista */
-.anime-list {
-    display: flex;
-    overflow-x: auto;
-    padding: 20px 0;
-    gap: 20px;
-    flex-wrap: nowrap;
-    scroll-behavior: unset;
-    /* Desactiva cualquier desplazamiento suave */
-}
+ /* Elimina cualquier animación de desplazamiento en el contenedor de la lista */
+ .anime-list {
+     display: flex;
+     overflow-x: auto;
+     padding: 20px 0;
+     gap: 20px;
+     flex-wrap: nowrap;
+     scroll-behavior: unset;
+     /* Desactiva cualquier desplazamiento suave */
+ }
 
-.anime-item {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    text-align: center;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
+ /* Estilo para cada item de anime */
+ .anime-item {
+     flex: 1 0 10%;
+     /* Hace que cada item ocupe el 21% del contenedor y sea flexible */
+     height: auto;
+     /* Mantiene la relación de aspecto de las imágenes */
+     margin-bottom: 10px;
+     /* Espacio entre los items */
+     text-align: center;
+     /* Centra el texto dentro del item */
+     background-color: #f0f0f0;
+     /* Fondo claro para los items */
+     padding: 10px;
+     /* Agrega relleno dentro de los items */
+     border-radius: 8px;
+     /* Bordes redondeados */
+     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+     /* Sombra sutil */
+ }
 
-.anime-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
+ /* Estilo para las imágenes dentro de los items */
+ .anime-item img {
+     width: 100%;
+     /* La imagen ocupa todo el ancho disponible */
+     height: auto;
+     /* Mantiene la proporción de la imagen */
+     border-radius: 5px;
+     /* Bordes redondeados en las imágenes */
+ }
 
-.anime-item img {
-    max-width: 150px;
-    border-radius: 8px;
-}
+ /* Estilo para los títulos de los animes */
+ .anime-title {
+     margin-top: 8px;
+     /* Espacio entre la imagen y el título */
+     font-size: 12px;
+     /* Tamaño más pequeño para el título */
+     font-weight: bold;
+     /* Título en negrita */
+     color: #333;
+     /* Color oscuro para el texto */
+ }
 
-.anime-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #333;
-}
 
-.loading {
-    text-align: center;
-    font-size: 18px;
-    color: #555;
-    margin-top: 20px;
-}
+ .loading {
+     text-align: center;
+     font-size: 18px;
+     color: #555;
+     margin-top: 20px;
+ }
 
-.error {
-    color: red;
-}
+ .error {
+     color: red;
+ }
 
-/* Modal Styling */
+ /* Modal Styling */
 .modal {
     display: none;
     position: fixed;
@@ -146,32 +205,54 @@ h2 {
     padding: 20px;
     border-radius: 10px;
     width: 80%;
-    max-width: 600px;
+    max-width: 900px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     overflow-y: auto;
     max-height: 80vh;
+    position: relative;
 }
 
-.modal-content h2 {
+/* Contenedor para la imagen y título */
+.modal-header {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-header img {
+    max-width: 250px; /* Tamaño de la imagen */
+    border-radius: 8px;
+}
+
+.modal-info {
+    flex-grow: 1; /* Para que ocupe el espacio restante */
+    text-align: left;
+}
+
+/* Título del anime */
+.modal-info h2 {
     color: #333;
     font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-.modal-content p {
+/* Sinopsis debajo de la imagen */
+.modal-info p {
     color: #555;
     font-size: 1rem;
     line-height: 1.5;
     margin-bottom: 15px;
 }
 
-.modal-content img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-bottom: 20px;
+/* Información adicional a la derecha de la imagen */
+.modal-extra-info {
+    text-align: left;
+    color: #555;
 }
 
+/* Estilos del botón de cerrar */
 .close {
     color: #aaa;
     font-size: 28px;
@@ -188,54 +269,53 @@ h2 {
     color: #333;
 }
 
-/* Pagination Styling */
-/* Alineación de los botones de paginación y el número de página */
-.pagination {
-    display: flex;
-    justify-content: center;
-    /* Centramos todo el contenido (botones y número de página) */
-    align-items: center;
-    margin-top: 20px;
-    gap: 20px;
-    /* Añadimos un espacio entre los elementos */
-}
+ /* Pagination Styling */
+ .pagination-container {
+     display: flex;
+     align-items: center;
+     /* Alinea los elementos verticalmente */
+     justify-content: center;
+     /* Centra los elementos horizontalmente */
+     gap: 15px;
+     /* Espacio entre los botones y la información */
+     margin-top: 20px;
+     /* Espacio superior */
+ }
 
-.pagination .page-info {
-    font-size: 16px;
-    font-weight: bold;
-}
+ .pagination-container button {
+     padding: 10px 20px;
+     /* Estilo de los botones */
+     background-color: #333;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+     font-size: 14px;
+ }
+
+ .pagination-container button:disabled {
+     background-color: #dcdcdc;
+     /* Color cuando está deshabilitado */
+     cursor: not-allowed;
+ }
+
+ .pagination-container div {
+     font-size: 14px;
+     font-weight: bold;
+     color: #333;
+ }
 
 
-.pagination button {
-    background-color: #333;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-    margin: 0 5px;
-}
+ /* Mobile responsiveness */
+ @media (max-width: 600px) {
+     .modal-content {
+         width: 90%;
+         max-width: 450px;
+         padding: 15px;
+     }
 
-.pagination button:hover {
-    background-color: #555;
-}
-
-.pagination button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    .modal-content {
-        width: 90%;
-        max-width: 450px;
-        padding: 15px;
-    }
-
-    .modal-content img {
-        max-width: 100%;
-        height: auto;
-    }
-}
+     .modal-content img {
+         max-width: 100%;
+         height: auto;
+     }
+ }

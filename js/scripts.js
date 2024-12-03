@@ -37,7 +37,6 @@ async function fetchGenres() {
 }
 
 // Función para actualizar las opciones del select
-// Función para actualizar las opciones del select
 function updateGenreOptions(genres) {
     const selectElement = document.getElementById('topGenreFilter'); // Para animes más vistos
     const selectElement2 = document.getElementById('recommGenreFilter'); // Para animes recomendados en emisión
@@ -70,7 +69,6 @@ function updateGenreOptions(genres) {
 // Llamar a la función para obtener los géneros cuando la página esté cargada
 document.addEventListener('DOMContentLoaded', fetchGenres);
 
-
 // Función para actualizar la lista de animes
 function updateAnimeList(animeData, page, listId, loadingId, paginationId, lastPage, type) {
     const listElement = document.getElementById(listId);
@@ -83,44 +81,61 @@ function updateAnimeList(animeData, page, listId, loadingId, paginationId, lastP
     if (animeData && animeData.data.length > 0) {
         animeData.data.forEach(anime => {
             const animeItem = document.createElement('div');
-            animeItem.classList.add('anime-item');
-            animeItem.innerHTML = `
-                <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
-                <div class="anime-title">${anime.title}</div>
-            `;
-            animeItem.onclick = () => openModal(anime);
+            animeItem.classList.add('anime-item'); // Asegurarse de que las clases se mantienen
+            animeItem.style.flex = '1 0 150px';  // Establecer tamaño flexible
+            animeItem.style.maxWidth = '180px';  // Ancho máximo
+            animeItem.style.minWidth = '150px';  // Ancho mínimo
+            animeItem.style.marginBottom = '15px';  // Espaciado entre los elementos
+            animeItem.style.textAlign = 'center';  // Centrar el texto dentro del item
+
+            // Añadir la imagen
+            const img = document.createElement('img');
+            img.src = anime.images.jpg.image_url;
+            img.alt = anime.title;
+            img.style.width = '100%';  // Imagen en 100% de ancho
+            img.style.minHeight = 'auto';  // Mantener altura proporcional
+            img.style.objectFit = 'cover';  // Ajuste de la imagen sin distorsión
+
+            // Añadir el título
+            const title = document.createElement('div');
+            title.classList.add('anime-title');
+            title.textContent = anime.title;
+            title.style.fontSize = '14px';  // Tamaño del título
+            title.style.fontWeight = 'bold';  // Negrita
+            title.style.color = '#333';  // Color del texto
+
+            animeItem.appendChild(img);
+            animeItem.appendChild(title);
+
+            animeItem.onclick = () => openModal(anime);  // Función para abrir el modal
 
             listElement.appendChild(animeItem);
         });
 
-        // Mostrar la cantidad total de páginas
+        // Información de la página actual
         const pageInfo = document.createElement('div');
         pageInfo.textContent = `Página ${page} de ${lastPage}`;
         paginationElement.appendChild(pageInfo);
 
-        // Llamada a la función que maneja la paginación
-        createPagination(paginationElement, page, lastPage, type);
+        createPagination(paginationElement, page, lastPage, type);  // Función de paginación
     } else {
-        // Si no hay animes, mostrar un mensaje especial
+        // Si no hay animes, mostrar el mensaje "No hay animes en esta página"
         const noAnimeMessage = document.createElement('div');
         noAnimeMessage.classList.add('no-anime-message');
         noAnimeMessage.innerHTML = `
             <div class="anime-item">
-                        <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
+                <img src="https://via.placeholder.com/150x225.png?text=No+Anime" alt="No hay animes">
                 <div class="anime-title">No hay animes en esta página.</div>
             </div>
         `;
         listElement.appendChild(noAnimeMessage);
 
-        // Mostrar la paginación incluso si no hay animes, para que el usuario pueda navegar a otras páginas
+        // Mostrar la paginación
         createPagination(paginationElement, page, lastPage, type);
     }
 
-    loadingElement.style.display = 'none';
+    loadingElement.style.display = 'none';  // Ocultar el indicador de carga
 }
-
-
-// Función para crear la paginación
 
 
 function scrollToStart() {
@@ -145,6 +160,7 @@ function openModal(anime) {
 
     document.getElementById('animeModal').style.display = 'block';
 }
+
 
 
 // Función para cerrar el modal
@@ -364,10 +380,13 @@ function fetchRecommAnime(page) {
         });
 }
 
-
 function createPagination(paginationElement, currentPage, lastPage, type) {
     // Limpiar los botones previos de paginación antes de agregar los nuevos
     paginationElement.innerHTML = '';
+
+    // Crear contenedor para la paginación
+    const paginationContainer = document.createElement('div');
+    paginationContainer.classList.add('pagination-container'); // Añadir clase CSS
 
     // Botón de "Anterior"
     const prevButton = document.createElement('button');
@@ -382,7 +401,12 @@ function createPagination(paginationElement, currentPage, lastPage, type) {
             }
         }
     };
-    paginationElement.appendChild(prevButton);
+    paginationContainer.appendChild(prevButton);
+
+    // Información de la página actual
+    const pageInfo = document.createElement('div');
+    pageInfo.textContent = `Página ${currentPage} de ${lastPage}`;
+    paginationContainer.appendChild(pageInfo);
 
     // Botón de "Siguiente"
     const nextButton = document.createElement('button');
@@ -393,14 +417,95 @@ function createPagination(paginationElement, currentPage, lastPage, type) {
             loadNextPage(currentPage + 1, type);
         }
     };
-    paginationElement.appendChild(nextButton);
+    paginationContainer.appendChild(nextButton);
 
-    // Información de la página actual
-    const pageInfo = document.createElement('div');
-    pageInfo.textContent = `Página ${currentPage} de ${lastPage}`;
-    paginationElement.appendChild(pageInfo);
+    // Añadir el contenedor al elemento de paginación
+    paginationElement.appendChild(paginationContainer);
 }
 
+
+function searchAnime(query) {
+    let url = `${BASE_URL}/anime?q=${query}`;
+
+    // Mostramos el mensaje de carga mientras obtenemos los resultados
+    const searchResultsContainer = document.getElementById('searchResults');
+    searchResultsContainer.innerHTML = `<p>Cargando resultados...</p>`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.data && data.data.length > 0) {
+                displaySearchResults(data.data);
+            } else {
+                searchResultsContainer.innerHTML = '<p>No hay resultados.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error al buscar animes:', error);
+            searchResultsContainer.innerHTML = '<p>Error al obtener los resultados.</p>';
+        });
+}
+
+// Función para mostrar los resultados de la búsqueda
+function displaySearchResults(animes) {
+    const searchResultsContainer = document.getElementById('searchResults');
+    searchResultsContainer.innerHTML = '';  // Limpiar los resultados anteriores
+
+    // Configuración del contenedor
+    searchResultsContainer.style.display = 'flex';
+    searchResultsContainer.style.flexWrap = 'wrap';
+    searchResultsContainer.style.justifyContent = 'center';  // Centra los items en el contenedor
+    searchResultsContainer.style.alignItems = 'stretch';  // Alineación superior para los items
+    searchResultsContainer.style.gap = '10px';  // Espaciado entre los elementos
+    searchResultsContainer.style.padding = '10px';  // Ajuste de padding
+
+    // Iteración sobre los animes para mostrarlos
+    animes.forEach(anime => {
+        const animeItem = document.createElement('div');
+        animeItem.classList.add('anime-item');  // Aplica estilos a cada item
+        animeItem.innerHTML = `
+            <img src="${anime.images.jpg.image_url}" alt="${anime.title}">
+            <div class="anime-title">${anime.title}</div>
+        `;
+
+        // Ajustes directos a los estilos del item
+        animeItem.style.flex = '1 0 150px';  // Tamaño flexible pero no menor a 150px
+        animeItem.style.maxWidth = '180px';  // Ancho máximo de 180px para no ser demasiado anchos
+        animeItem.style.minWidth = '150px';  // Ancho mínimo de 150px
+        animeItem.style.marginBottom = '15px';  // Espacio debajo de cada item
+        animeItem.style.textAlign = 'center';  // Centrar el texto dentro del item
+
+        // Ajustes directos a las imágenes para que no sean demasiado grandes
+        const img = animeItem.querySelector('img');
+        img.style.width = '100%';  // La imagen ocupa todo el ancho del item
+        img.style.minHeight = 'automáticamente';  // Limita la altura de la imagen para no ser demasiado grande
+        img.style.objectFit = 'cover';  // Hace que la imagen se ajuste al contenedor sin distorsionarse
+
+        // Ajustar el tamaño del título para hacerlo más visible
+        const title = animeItem.querySelector('.anime-title');
+        title.style.fontSize = '14px';  // Aumentar el tamaño de la fuente
+        title.style.fontWeight = 'bold';  // Hacer el título en negrita
+        title.style.color = '#333';  // Color oscuro para el texto
+
+        animeItem.onclick = () => openModal(anime);
+
+        // Añadir el item al contenedor de resultados
+        searchResultsContainer.appendChild(animeItem);
+    });
+}
+
+// Detectar cuando el usuario escriba en el campo de búsqueda
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const query = e.target.value.trim();
+
+    // Si el campo de búsqueda está vacío, ocultamos los resultados
+    if (query === '') {
+        document.getElementById('searchResults').style.display = 'none';
+    } else {
+        document.getElementById('searchResults').style.display = 'block';
+        searchAnime(query);
+    }
+});
 
 // Cargar los animes más vistos y recomendados al inicio
 fetchTopAnime(topPage);
