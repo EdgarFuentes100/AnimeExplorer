@@ -44,12 +44,12 @@
             <div id="recommPagination" class="pagination"></div>
         </div>
 
-        <div class="anime-section" id="recommAnimeSection">
+        <div class="anime-section" id="tempoAnimeSection">
             <h2>Recomendados en Emisión por años</h2>
 
             <div class="filter-container">
                 <!-- Filtro por Año -->
-                <select id="recommYearFilter">
+                <select id="tempoYearFilter">
                     <option value="">Seleccionar Año</option>
                     <option value="2024">2024</option>
                     <option value="2023">2023</option>
@@ -59,7 +59,7 @@
                 </select>
 
                 <!-- Filtro por Temporada -->
-                <select id="recommSeasonFilter">
+                <select id="tempoSeasonFilter">
                     <option value="">Seleccionar Temporada</option>
                     <option value="winter">Invierno</option>
                     <option value="spring">Primavera</option>
@@ -67,10 +67,9 @@
                     <option value="fall">Otoño</option>
                 </select>
             </div>
-
-            <div id="recommAnimeList" class="anime-list"></div>
-            <div id="recommLoading" class="loading">Cargando...</div>
-            <div id="recommPagination" class="pagination"></div>
+            <div id="tempoAnimeList" class="anime-list"></div>
+            <div id="tempoLoading" class="loading">Cargando...</div>
+            <div id="tempoPagination" class="pagination"></div>
         </div>
 
     </div>
@@ -95,8 +94,6 @@
 
             </div>
             <div class="modal-info">
-                <button id="translateButton">Traducir Sinopsis</button>
-
                 <p><strong>Sinopsis:</strong></p>
                 <p id="animeSynopsis"></p> <!-- Sinopsis debajo de la imagen -->
             </div>
@@ -104,8 +101,13 @@
         </div>
     </div>
 
-    <script src="js/scripts.js">
-    </script>
+    <script src="js/main.js"></script>
+    <script src="js/getGeneros.js"></script>
+    <script src="js/getRecommAnime.js"></script>
+    <script src="js/getTopAnime.js"></script>
+    <script src="js/displayAnime.js"></script>
+    <script src="js/searchAnime.js"></script>
+    <script src="js/getTempoAnime.js"></script>
 </body>
 
 </html>
