@@ -289,6 +289,21 @@
          padding: 8px;
          /* Reducir padding */
      }
+
+     .filter-container {
+         flex-direction: column;
+         /* En pantallas pequeñas, se apilan los filtros verticalmente */
+         align-items: flex-start;
+         /* Alinea los elementos al principio */
+     }
+
+     .filter-container select {
+         width: 100%;
+     }
+
+     #tempoYearFilter {
+         margin-bottom: 5px;
+     }
  }
 
  @media (max-width: 480px) {
