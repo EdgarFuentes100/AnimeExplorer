@@ -22,7 +22,7 @@
         <div id="searchResults" class="search-results">
             <!-- Aquí se mostrarán los resultados de la búsqueda -->
         </div>
-        <!-- Sección de Animes Más Vistos (Carrusel Horizontal) -->
+        <!-- Sección de Animes Más Vistos -->
         <div class="anime-section" id="topAnimeSection">
             <h2>Animes Más Vistos</h2>
             <div class="filter-container">
@@ -37,26 +37,20 @@
         <div class="anime-section" id="recommAnimeSection">
             <h2>Recomendados en Emisión</h2>
             <div class="filter-container">
-                <select id="recommGenreFilter"></select> <!-- Para Animes Recomendados -->
+                <select id="recommGenreFilter"></select>
             </div>
             <div id="recommAnimeList" class="anime-list"></div>
             <div id="recommLoading" class="loading">Cargando...</div>
             <div id="recommPagination" class="pagination"></div>
         </div>
 
+        <!-- Sección de Recomendados por Año -->
         <div class="anime-section" id="tempoAnimeSection">
             <h2>Recomendados en Emisión por años</h2>
 
             <div class="filter-container">
                 <!-- Filtro por Año -->
-                <select id="tempoYearFilter">
-                    <option value="">Seleccionar Año</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
-                </select>
+                <select id="tempoYearFilter"></select>
 
                 <!-- Filtro por Temporada -->
                 <select id="tempoSeasonFilter">
@@ -71,7 +65,6 @@
             <div id="tempoLoading" class="loading">Cargando...</div>
             <div id="tempoPagination" class="pagination"></div>
         </div>
-
     </div>
 
     <!-- Modal de Detalles del Anime -->
@@ -79,27 +72,60 @@
         <div class="modal-content">
             <span class="close">&times;</span>
 
-            <!-- Contenedor para la imagen y el contenido -->
             <div class="modal-header">
                 <img id="animeImageModal" src="" alt="Anime Image">
-                <!-- Información adicional a la derecha de la imagen -->
                 <div class="modal-extra-info">
                     <h2 id="animeTitleModal"></h2>
-
                     <p><strong>Género:</strong> <span id="animeGenre"></span></p>
                     <p><strong>Temporadas:</strong> <span id="animeSeasons"></span></p>
                     <p><strong>Episodios:</strong> <span id="animeEpisodes"></span></p>
                     <p><strong>Puntuación:</strong> <span id="animeRating"></span></p>
                 </div>
-
             </div>
             <div class="modal-info">
                 <p><strong>Sinopsis:</strong></p>
-                <p id="animeSynopsis"></p> <!-- Sinopsis debajo de la imagen -->
+                <p id="animeSynopsis"></p>
             </div>
-
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script>
+        // Generar años dinámicamente desde 2020 hasta el año actual
+        document.addEventListener("DOMContentLoaded", () => {
+            const yearSelect = document.getElementById("tempoYearFilter");
+            const seasonSelect = document.getElementById("tempoSeasonFilter");
+            const currentYear = new Date().getFullYear();
+            const currentMonth = new Date().getMonth(); // 0 = Enero, 11 = Diciembre
+            const startYear = 2020;
+
+            // Llenar años dinámicamente
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "Seleccionar Año";
+            yearSelect.appendChild(defaultOption);
+
+            for (let year = currentYear; year >= startYear; year--) {
+                const option = document.createElement("option");
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+
+            // Detectar temporada actual
+            const getSeason = (month) => {
+                if ([11, 0, 1].includes(month)) return "winter";   // Dic, Ene, Feb
+                if ([2, 3, 4].includes(month)) return "spring";   // Mar, Abr, May
+                if ([5, 6, 7].includes(month)) return "summer";   // Jun, Jul, Ago
+                return "fall";                                   // Sep, Oct, Nov
+            };
+
+            // Seleccionar año y temporada actuales
+            yearSelect.value = currentYear;
+            seasonSelect.value = getSeason(currentMonth);
+        });
+
+    </script>
 
     <script src="js/main.js"></script>
     <script src="js/getGeneros.js"></script>
